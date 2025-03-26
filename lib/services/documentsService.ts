@@ -11,28 +11,28 @@ export async function fetchRecentMockDocuments() {
   
     return [
       {
-        id: "doc-1",
+        id: 1,
         title: "Smith vs. Johnson - Settlement Agreement",
         version: "2.3-FINAL",
         updatedAt: "2 hours ago",
         updatedBy: "Jane Smith",
       },
       {
-        id: "doc-2",
+        id: 2,
         title: "Trademark Application - TechCorp",
         version: "1.2",
         updatedAt: "Yesterday",
         updatedBy: "Michael Johnson",
       },
       {
-        id: "doc-3",
+        id: 3,
         title: "Real Estate Purchase Agreement",
         version: "3.1-FINAL",
         updatedAt: "2 days ago",
         updatedBy: "Sarah Williams",
       },
       {
-        id: "doc-4",
+        id: 4,
         title: "Corporate Bylaws - Acme Inc.",
         version: "1.0",
         updatedAt: "3 days ago",

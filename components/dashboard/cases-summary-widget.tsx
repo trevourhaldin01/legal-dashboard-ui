@@ -4,10 +4,13 @@ import { RootState } from "@/lib/store/store";
 import { AlertCircle, CheckCircle, Clock, FileText } from "lucide-react";
 import { useSelector } from "react-redux";
 import Skeleton from "../ui/Skeleton";
+import { fetchCases } from "@/lib/store/cases/casesSlice";
+import { useDispatch } from "react-redux";
 
 export default function  CasesSummaryWidget(){
     const {cases,loading, error} = useSelector((state:RootState)=>state.cases);
-    console.log({cases})
+    // console.log({cases})
+    const dispatch = useDispatch();
 
     // Summarizing cases based on status
     const summary = cases.reduce(
@@ -29,6 +32,14 @@ export default function  CasesSummaryWidget(){
             <div className="flex items-center justify-center h-32 text-red-500">
               <AlertCircle className="h-8 w-8 mr-2"  />
               <span>Failed to load case data</span>
+            </div>
+            <div className="flex justify-center">
+                <button
+                    onClick={() => dispatch(fetchCases() as any)} // Dispatch the fetchRecentDocuments action to reload data
+                    className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
+                >
+                    Retry loading cases
+                </button>
             </div>
           </div>
         );

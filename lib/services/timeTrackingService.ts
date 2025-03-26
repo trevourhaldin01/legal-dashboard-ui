@@ -11,25 +11,25 @@ export async function fetchMockTimeTracking() {
   
     return [
       {
-        id: "attorney-1",
+        id: 1,
         name: "Jane Smith",
         role: "Senior Partner",
         hours: 32.5,
       },
       {
-        id: "attorney-2",
+        id: 2,
         name: "Michael Johnson",
         role: "Associate",
         hours: 45.2,
       },
       {
-        id: "attorney-3",
+        id: 3,
         name: "Sarah Williams",
         role: "Partner",
         hours: 28.7,
       },
       {
-        id: "attorney-4",
+        id: 4,
         name: "Robert Davis",
         role: "Junior Associate",
         hours: 52.1,

@@ -4,11 +4,14 @@ import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
 import { AlertCircle, FileText } from "lucide-react";
 import Skeleton from "../ui/Skeleton";
+import { fetchRecentDocuments } from "@/lib/store/documents/documentsSlice";
+import { useDispatch } from "react-redux";
 
 
 export function RecentDocumentsWidget(){
     const {documents,loading,error} = useSelector((state:RootState)=> state.documents);
-    console.log({documents});
+    // console.log({documents});
+    const dispatch = useDispatch();
     if (error) {
         return (
           <div className="col-span-1 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
@@ -19,6 +22,14 @@ export function RecentDocumentsWidget(){
             <div className="flex items-center justify-center h-32 text-red-500">
               <AlertCircle className="h-8 w-8 mr-2"  />
               <span>Failed to load documents</span>
+            </div>
+            <div className="flex justify-center">
+              <button
+                onClick={() => dispatch(fetchRecentDocuments() as any)} // Dispatch the fetchRecentDocuments action to reload data
+                className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
+              >
+                Retry Loading Documents
+              </button>
             </div>
           </div>
         );

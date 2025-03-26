@@ -3,12 +3,20 @@
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "@/lib/store/store"
-import { FileText, Filter, Plus, Search,AlertCircle } from "lucide-react"
+import { FileText, Filter, Plus, Search,AlertCircle, Pencil, Trash } from "lucide-react"
+import { useDispatch } from "react-redux"
+import DocumentModal from "@/components/modals/DocumetModal"
+import { Document } from "@/lib/types"
+import { deleteDocument, fetchRecentDocuments } from "@/lib/store/documents/documentsSlice"
 
 export default function DocumentsPage() {
   const { role } = useSelector((state: RootState) => state.auth);
   const {documents, loading, error} = useSelector((state:RootState)=>state.documents);
   const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useDispatch();
+
+  const [isModalOpen, setModalOpen] = useState(false)
+  const [editingDocument, setEditingDocument] = useState<Document | null>(null)
 
   if(error){
     return (
@@ -17,48 +25,43 @@ export default function DocumentsPage() {
               <AlertCircle className="h-8 w-8 mr-2"  />
               <span>Failed to load documents</span>
             </div>
+            <div className="flex justify-center">
+              <button
+                onClick={() => dispatch(fetchRecentDocuments() as any)} // Dispatch the fetchRecentDocuments action to reload data
+                className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
+              >
+                Retry Loading Documents
+              </button>
+            </div>
 
         </div>
     )
   }
-
-  // Mock document data
-//   const documents = [
-//     {
-//       id: "doc-1",
-//       title: "Smith vs. Johnson - Settlement Agreement",
-//       type: "Settlement",
-//       version: "2.3-FINAL",
-//       updatedAt: "2023-05-15",
-//       updatedBy: "Jane Smith",
-//       status: "Final",
-//     },
-//     {
-//       id: "doc-2",
-//       title: "Trademark Application - TechCorp",
-//       type: "Application",
-//       version: "1.2",
-//       updatedAt: "2023-05-10",
-//       updatedBy: "Michael Johnson",
-//       status: "Draft",
-//     },
-//   ]
 
   // Filter documents based on search query
   const filteredDocuments = documents.filter(
     (doc) =>
       doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       doc.updatedBy.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  );
+
+
 
   return (
     <div className="space-y-6 p-6">
+      <DocumentModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} editingDocument={editingDocument} documents={documents} />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Documents</h1>
           <p className="text-gray-500">Manage and organize all legal documents in one place.</p>
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-700">
+        <button 
+          onClick={() => {
+            setEditingDocument(null)
+            setModalOpen(true)
+          }}
+          className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-700"
+        >
           <Plus className="h-4 w-4" /> New Document
         </button>
       </div>
@@ -94,6 +97,7 @@ export default function DocumentsPage() {
                 <th className="p-3 hidden md:table-cell">Last Updated</th>
                 <th className="p-3 hidden sm:table-cell">Updated By</th>
                 <th className="p-3">Version</th>
+                <th className="p-3">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -123,6 +127,21 @@ export default function DocumentsPage() {
                       >
                         {doc.version}
                       </span>
+                    </td>
+                    <td className="p-3 flex gap-2">
+                      <button onClick={() => { setEditingDocument(doc); setModalOpen(true); }} className="text-green-600 cursor-pointer"><Pencil /></button>
+                      {role === "admin" && (
+                        <button
+                          onClick={() => {
+                            if (window.confirm("Are you sure you want to delete this document?")) {
+                              dispatch(deleteDocument(doc.id))
+                            }
+                          }}
+                          className="text-red-600 cursor-pointer"
+                        >
+                          <Trash />
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))

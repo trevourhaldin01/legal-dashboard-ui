@@ -2,14 +2,22 @@
 
 import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
-import { AlertCircle,Plus,Clock, Calendar,Filter, Search } from "lucide-react";
+import { AlertCircle,Plus,Clock, Calendar,Filter, Search, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { TimeEntry } from "@/lib/types";
+import TimeEntryModal from "@/components/modals/TimeEntryModal";
+import { deleteTimeEntry, fetchTimeTracking } from "@/lib/store/timeTracking/timeTrackingSlice";
 
 export default function TimeTrackingPage(){
     const {role} = useSelector((state:RootState)=>state.auth);
     const {data,loading,error} = useSelector((state:RootState)=>state.timeTracking);
 
     const [searchQuery, setSearchQuery] = useState("");
+
+    const dispatch = useDispatch();
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [editinEntry, setEditingEntry] = useState<TimeEntry | null>(null);
 
     // Filter time entries based on search query
     const filteredEntries = data.filter(
@@ -20,7 +28,7 @@ export default function TimeTrackingPage(){
     )
 
   // Calculate totals
-  const totalHours = filteredEntries.reduce((sum, entry) => sum + entry.hours, 0)
+  const totalHours = filteredEntries.reduce((sum, entry) => sum + entry.hours, 0 || 0)
   const totalBillable = filteredEntries.reduce((sum, entry) => sum + entry.hours * 250, 0) //assumed a rate of 250$
 
   // Function to get initials from name
@@ -39,6 +47,14 @@ export default function TimeTrackingPage(){
                   <AlertCircle className="h-8 w-8 mr-2"  />
                   <span>Failed to load tracking data</span>
                 </div>
+                <div className="flex justify-center">
+                    <button
+                        onClick={() => dispatch(fetchTimeTracking() as any)} // Dispatch the fetchRecentDocuments action to reload data
+                        className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
+                    >
+                        Retry loading tracking data
+                    </button>
+                </div>
     
             </div>
         );
@@ -46,12 +62,21 @@ export default function TimeTrackingPage(){
 
     return (
         <div className="space-y-6">
+            <TimeEntryModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} editingEntry={editinEntry} entries={data} />
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Time Tracking</h1>
                     <p className="text-muted-foreground">Track and manage billable hours.</p>
                 </div>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-700">
+                <button 
+                    onClick={
+                        () => {
+                            setModalOpen(true);
+                            setEditingEntry(null);
+                        }
+                    }
+                    className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-700"
+                >
                     <Plus className="h-4 w-4" /> New Time Entry
                 </button>
             </div>
@@ -114,6 +139,9 @@ export default function TimeTrackingPage(){
                                     <th className="p-3 hidden md:table-cell">Role</th>
                                     <th className="p-3 ">Hours</th>
                                     <th className="p-3 hidden md:table-cell">Billable Amount</th>
+                                    {role ==="admin" && (
+                                        <th className="p-3">Actions</th>
+                                    )}
 
                                 </tr>
                             </thead>
@@ -137,6 +165,23 @@ export default function TimeTrackingPage(){
                                             <td className="p-3 hidden md:table-cell">{entry.role}</td>
                                             <td className="p-3 l">{entry.hours}</td>
                                             <td className="p-3 hidden md:table-cell">${entry.hours *250}</td>
+                                            {role ==="admin" && (
+                                                <td className="p-3 flex gap-2">
+                                                <button onClick={() => { setEditingEntry(entry); setModalOpen(true); }} className="text-green-600 cursor-pointer"><Pencil /></button>
+                                                {role === "admin" && (
+                                                  <button
+                                                    onClick={() => {
+                                                      if (window.confirm("Are you sure you want to delete this Entry?")) {
+                                                        dispatch(deleteTimeEntry(entry.id))
+                                                      }
+                                                    }}
+                                                    className="text-red-600 cursor-pointer"
+                                                  >
+                                                    <Trash />
+                                                  </button>
+                                                )}
+                                              </td>
+                                            )}
 
                                         </tr>
                                     ))

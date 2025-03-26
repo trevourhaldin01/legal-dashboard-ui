@@ -1,13 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import { fetchRecentMockDocuments } from "@/lib/services/documentsService"
+import { Document } from "@/lib/types"
 
-interface Document {
-  id: string
-  title: string
-  version: string
-  updatedAt: string
-  updatedBy: string
-}
 
 interface DocumentsState {
   documents: Document[]
@@ -29,7 +23,20 @@ export const fetchRecentDocuments = createAsyncThunk("documents/fetchRecentDocum
 const documentsSlice = createSlice({
   name: "documents",
   initialState,
-  reducers: {},
+  reducers: {
+    addDocument: (state, action: PayloadAction<Document>) => {
+      state.documents.push(action.payload);
+    },
+    updateDocument: (state, action: PayloadAction<Document>) => {
+      const index = state.documents.findIndex((doc) => doc.id === action.payload.id);
+      if (index !== -1) {
+        state.documents[index] = { ...state.documents[index], ...action.payload };
+      }
+    },
+    deleteDocument: (state, action: PayloadAction<number>) => {
+      state.documents = state.documents.filter((doc) => doc.id !== action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchRecentDocuments.pending, (state) => {
@@ -45,7 +52,9 @@ const documentsSlice = createSlice({
         state.error = action.error.message || "Failed to fetch documents"
       })
   },
-})
+});
 
-export default documentsSlice.reducer
+export const { addDocument, updateDocument, deleteDocument } = documentsSlice.actions;
+
+export default documentsSlice.reducer;
 

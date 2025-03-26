@@ -1,12 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk,PayloadAction } from "@reduxjs/toolkit"
 import { fetchMockTimeTracking } from "@/lib/services/timeTrackingService"
+import { TimeEntry } from "@/lib/types"
 
-interface TimeEntry {
-  id: string
-  name: string
-  role: string
-  hours: number
-}
 
 interface TimeTrackingState {
   data: TimeEntry[]
@@ -28,7 +23,20 @@ export const fetchTimeTracking = createAsyncThunk("timeTracking/fetchTimeTrackin
 const timeTrackingSlice = createSlice({
   name: "timeTracking",
   initialState,
-  reducers: {},
+  reducers: {
+    addTimeEntry: (state, action: PayloadAction<TimeEntry>) => {
+      state.data.push(action.payload);
+    },
+    updateTimeEntry: (state, action: PayloadAction<TimeEntry>) => {
+      const index = state.data.findIndex((entry) => entry.id === action.payload.id);
+      if (index !== -1) {
+        state.data[index] = { ...state.data[index], ...action.payload };
+      }
+    },
+    deleteTimeEntry: (state, action: PayloadAction<number>) => {
+      state.data = state.data.filter((entry) => entry.id !== action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTimeTracking.pending, (state) => {
@@ -46,5 +54,6 @@ const timeTrackingSlice = createSlice({
   },
 })
 
+export const { addTimeEntry, updateTimeEntry, deleteTimeEntry } = timeTrackingSlice.actions;
 export default timeTrackingSlice.reducer;
 

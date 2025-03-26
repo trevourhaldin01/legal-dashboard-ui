@@ -7,22 +7,34 @@ import { fetchCases } from "@/lib/store/cases/casesSlice";
 import { fetchRecentDocuments } from "@/lib/store/documents/documentsSlice";
 import { fetchTimeTracking } from "@/lib/store/timeTracking/timeTrackingSlice";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-export default function DashboardPage(){
-    const dispatch = useDispatch();
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/lib/store/store"; // Make sure this is imported
 
-    useEffect(()=>{
-        dispatch(fetchCases() as any);
-        dispatch(fetchRecentDocuments() as any);
-        dispatch(fetchTimeTracking() as any);
-    })
-    return (
-        <div className="grid gric-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <CasesSummaryWidget />
-            <RecentDocumentsWidget />
-            <TimeTrackingWidget />
+export default function DashboardPage() {
+  const dispatch = useDispatch();
 
+  // Access the state from Redux to check if data exists
+  const cases = useSelector((state: RootState) => state.cases.cases);
+  const documents = useSelector((state: RootState) => state.documents.documents);
+  const timeTracking = useSelector((state: RootState) => state.timeTracking.data);
 
-        </div>
-    )
+  useEffect(() => {
+    if (!cases || cases.length === 0) {
+      dispatch(fetchCases() as any); // Only fetch if data does not exist
+    }
+    if (!documents || documents.length === 0) {
+      dispatch(fetchRecentDocuments() as any); // Only fetch if data does not exist
+    }
+    if (!timeTracking || timeTracking.length === 0) {
+      dispatch(fetchTimeTracking() as any); // Only fetch if data does not exist
+    }
+  }, [dispatch, cases, documents, timeTracking]); // Added dependencies for Redux state
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <CasesSummaryWidget />
+      <RecentDocumentsWidget />
+      <TimeTrackingWidget />
+    </div>
+  );
 }
