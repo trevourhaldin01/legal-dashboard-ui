@@ -7,7 +7,7 @@
 4. [Installation](#installation)
 
 ## <a name="introduction"> Introduction</a>
-This is a <a href="https://nextjs.org/">NextJS</a>  project designed to create a responsive and user-friendly dashboard for a legal practice management system. Built using Next.js, TypeScript, Redux Toolkit, and Tailwind CSS, this dashboard provides an intuitive interface for managing legal operations efficiently. The project simulates API interactions to ensure a dynamic and interactive experience, allowing users to navigate through different sections, manage case details, and configure system settings seamlessly. 
+This is a <a href="https://nextjs.org/">NextJS</a>  project designed to create a responsive and user-friendly dashboard for a legal practice management system. Built using Next.js, TypeScript, Redux Toolkit, and Tailwind CSS, this dashboard provides an intuitive interface for managing legal operations efficiently. The project simulates API interactions to ensure a dynamic and interactive experience, allowing users to navigate through different sections, manage case details, and configure system settings seamlessly.  The hosted application can be found at https://legal-dashboard-ui.vercel.app/
 
 ## <a name="tech_stack">Tech Stack</a>
 
