@@ -28,11 +28,7 @@ const navItems: NavItem[] = [
       href: "/dashboard/documents",
       icon: FileText,
     },
-    {
-      title: "Clients",
-      href: "/dashboard/clients",
-      icon: Users,
-    },
+    
     {
       title: "Time Tracking",
       href: "/dashboard/time-tracking",
@@ -46,7 +42,7 @@ const navItems: NavItem[] = [
     },
     {
       title: "File Management",
-      href: "/dashboard/files",
+      href: "",
       icon: Folder,
     },
     {

@@ -1,12 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { fetchMockCases } from "@/lib/services/caseService";
 
-interface Case {
-    id:string
-    name:string
-    description:string
-    status:string
-};
+import { Case } from "@/lib/types";
 
 interface CasesState{
     cases: Case[]
@@ -29,7 +24,20 @@ export const fetchCases = createAsyncThunk("cases/fetchCases", async()=>{
 const caseSlice  = createSlice({
     name:"cases",
     initialState,
-    reducers:{},
+    reducers:{
+        addCase: (state, action: PayloadAction<Case>) => {
+            state.cases.push(action.payload);
+          },
+          updateCase: (state, action: PayloadAction<Case>) => {
+            const index = state.cases.findIndex((caseIndex) => caseIndex.id === action.payload.id);
+            if (index !== -1) {
+              state.cases[index] = { ...state.cases[index], ...action.payload };
+            }
+          },
+          deleteCase: (state, action: PayloadAction<number>) => {
+            state.cases = state.cases.filter((casesIndex) => casesIndex.id !== action.payload);
+          },
+    },
     extraReducers: (builder)=>{
         builder
             .addCase(fetchCases.pending, (state)=>{
@@ -47,5 +55,5 @@ const caseSlice  = createSlice({
 
     }
 });
-
+export const {addCase, updateCase, deleteCase} = caseSlice.actions;
 export default caseSlice.reducer;

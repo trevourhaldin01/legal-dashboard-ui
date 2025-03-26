@@ -68,17 +68,21 @@ export default function TimeTrackingPage(){
                     <h1 className="text-3xl font-bold tracking-tight">Time Tracking</h1>
                     <p className="text-muted-foreground">Track and manage billable hours.</p>
                 </div>
-                <button 
-                    onClick={
-                        () => {
-                            setModalOpen(true);
-                            setEditingEntry(null);
+                {role === "admin" && (
+                    <button 
+                        onClick={
+                            () => {
+                                setModalOpen(true);
+                                setEditingEntry(null);
+                            }
                         }
-                    }
-                    className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-700"
-                >
-                    <Plus className="h-4 w-4" /> New Time Entry
-                </button>
+                        className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-700"
+                    >
+                        <Plus className="h-4 w-4" /> New Time Entry
+                    </button>
+                    
+                )}
+                
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">

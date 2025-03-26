@@ -1,3 +1,10 @@
+export interface Case {
+    id:number
+    name:string
+    description:string
+    status:string
+};
+
 export interface Document {
     id: number
     title: string
