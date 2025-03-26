@@ -1,4 +1,4 @@
-"use clients";
+"use client";
 
 import { RootState } from "@/lib/store/store";
 import { useSelector } from "react-redux";
@@ -11,7 +11,7 @@ export function TimeTrackingWidget(){
     const {data,loading,error} = useSelector((state:RootState)=>state.timeTracking);
     // console.log({data});
     const dispatch = useDispatch();
-
+    
     if (error) {
         return (
           <div className="col-span-1 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
@@ -25,7 +25,7 @@ export function TimeTrackingWidget(){
             </div>
             <div className="flex justify-center">
                 <button
-                    onClick={() => dispatch(fetchTimeTracking() as any)} // Dispatch the fetchRecentDocuments action to reload data
+                    onClick={() => dispatch(fetchTimeTracking() as any)} // Dispatch the fetchTimeTracking action to reload data
                     className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
                 >
                     Retry loading tracking data

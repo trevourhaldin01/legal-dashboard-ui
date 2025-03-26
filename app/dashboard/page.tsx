@@ -8,7 +8,7 @@ import { fetchRecentDocuments } from "@/lib/store/documents/documentsSlice";
 import { fetchTimeTracking } from "@/lib/store/timeTracking/timeTrackingSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/lib/store/store"; // Make sure this is imported
+import { RootState } from "@/lib/store/store"; 
 
 export default function DashboardPage() {
   const dispatch = useDispatch();
@@ -19,16 +19,17 @@ export default function DashboardPage() {
   const timeTracking = useSelector((state: RootState) => state.timeTracking.data);
 
   useEffect(() => {
+    // Only fetch if data does not exist
     if (!cases || cases.length === 0) {
-      dispatch(fetchCases() as any); // Only fetch if data does not exist
+      dispatch(fetchCases() as any); 
     }
     if (!documents || documents.length === 0) {
-      dispatch(fetchRecentDocuments() as any); // Only fetch if data does not exist
+      dispatch(fetchRecentDocuments() as any); 
     }
     if (!timeTracking || timeTracking.length === 0) {
-      dispatch(fetchTimeTracking() as any); // Only fetch if data does not exist
+      dispatch(fetchTimeTracking() as any); 
     }
-  }, [dispatch, cases, documents, timeTracking]); // Added dependencies for Redux state
+  }, [dispatch, cases, documents, timeTracking]); 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

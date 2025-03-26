@@ -64,7 +64,7 @@ export function RecentDocumentsWidget(){
                             </div>
                           </div>
                         </div>
-                        {/* <Badge variant={doc.version.includes("FINAL") ? "default" : "outline"}>v{doc.version}</Badge> */}
+                        
                         <span className={`inline-flex items-center rounded-3xl ${doc.version.includes("FINAL")?"bg-primary-foreground/80 text-white":" text-primary-muted-foreground bg-gray-50"}  px-2 py-1 text-xs font-medium  ring-1 ring-blue-700/10 ring-inset`}>
                             {doc.version}
                         </span>

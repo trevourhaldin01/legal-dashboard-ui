@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import { useSelector } from "react-redux"
 import { RootState } from "@/lib/store/store"
 
-import { Download, BarChart3, PieChart, LineChart, Calendar } from "lucide-react"
 
 export default function ReportsPage() {
     const { role } = useSelector((state: RootState) => state.auth);

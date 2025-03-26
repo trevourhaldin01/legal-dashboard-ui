@@ -23,9 +23,10 @@ export default function LoginPage(){
         try {
             await new Promise((resolve)=>setTimeout(resolve,1000))
             if(
-                email === "admin@legaltech.com" && password === "admin123" ||
-                email === "user@legaltech.com" && password === "user123"
+                email === "admin@legaltech.com" && password === "admin123" || //admin user
+                email === "user@legaltech.com" && password === "user123"  //standard user
             ){
+                // role assignment
                 const role = email.startsWith("admin") ? "admin" : "user";
                 dispatch(login({email, role}));
                 router.push("/dashboard");

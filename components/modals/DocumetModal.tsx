@@ -37,7 +37,7 @@ export default function DocumentModal({ isOpen, onClose, editingDocument, docume
     } else {
       // Find the highest existing numeric ID
       const highestId = documents
-        ?.map((doc: any) => doc.id) // Extract numbers from "doc-1"
+        ?.map((doc: any) => doc.id) 
         .reduce((max: number, num: number) => (num > max ? num : max), 0)
 
       setFormData({

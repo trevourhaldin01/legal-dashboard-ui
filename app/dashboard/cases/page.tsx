@@ -38,7 +38,7 @@ export default function CasesPage() {
     )
   }
 
-  // Filter documents based on search query
+  // Filter cases based on search query
   const filteredCases = cases.filter(
     (doc) =>
       doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

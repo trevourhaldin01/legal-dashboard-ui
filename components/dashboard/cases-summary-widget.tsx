@@ -35,7 +35,7 @@ export default function  CasesSummaryWidget(){
             </div>
             <div className="flex justify-center">
                 <button
-                    onClick={() => dispatch(fetchCases() as any)} // Dispatch the fetchRecentDocuments action to reload data
+                    onClick={() => dispatch(fetchCases() as any)} // Dispatch the fetchCases action to reload data
                     className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
                 >
                     Retry loading cases

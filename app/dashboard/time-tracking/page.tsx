@@ -49,7 +49,7 @@ export default function TimeTrackingPage(){
                 </div>
                 <div className="flex justify-center">
                     <button
-                        onClick={() => dispatch(fetchTimeTracking() as any)} // Dispatch the fetchRecentDocuments action to reload data
+                        onClick={() => dispatch(fetchTimeTracking() as any)} // Dispatch the fetchTimeTracking action to reload data
                         className="bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
                     >
                         Retry loading tracking data

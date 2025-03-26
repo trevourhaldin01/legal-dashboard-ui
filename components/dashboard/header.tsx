@@ -63,9 +63,7 @@ export default function DashboardHeader({onSidebarOpen}: Dashboardheaderprops){
                     </div>
 
                 </div>
-                
-
-
+            
             </div>
 
         </header>
