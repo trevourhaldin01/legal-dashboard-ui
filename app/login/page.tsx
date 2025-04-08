@@ -93,6 +93,15 @@ export default function LoginPage(){
                             )}
                         </button>
                     </form>
+                    <div className="mt-5 text-gray-500">
+                        <p className="">Login Credentials</p>
+                        <p>**admin**</p>
+                        <p className="text-sm">Email: admin@legaltech.com</p>
+                        <p className="text-sm">Password: admin123</p>
+                        <p>**user**</p>
+                        <p className="text-sm">Email: user@legaltech.com</p>
+                        <p className="text-sm">Password: user123</p>
+                    </div>
                 </div>
 
             </div>
